@@ -14,6 +14,7 @@ import { reportLovableError } from "../lib/lovable-error-reporting";
 import { CursorGlow } from "../components/CursorGlow";
 import { Navbar } from "../components/Navbar";
 import { Footer } from "../components/Footer";
+import { Toaster } from "@/components/ui/sonner";
 
 function NotFoundComponent() {
   return (
