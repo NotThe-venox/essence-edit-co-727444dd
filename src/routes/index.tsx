@@ -35,6 +35,7 @@ function Home() {
       <Process />
       <Testimonials />
       <FAQ />
+      <QuoteForm />
       <FinalCTA />
     </>
   );
