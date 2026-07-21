@@ -9,6 +9,7 @@ import { useState } from "react";
 import { HeroMockup } from "@/components/site/HeroMockup";
 import { Reveal } from "@/components/site/Reveal";
 import { PortfolioCard } from "@/components/site/PortfolioCard";
+import { QuoteForm } from "@/components/site/QuoteForm";
 import { projects } from "@/lib/portfolio";
 
 export const Route = createFileRoute("/")({
