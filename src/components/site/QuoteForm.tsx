@@ -74,6 +74,7 @@ export function QuoteForm() {
     turnaround: false,
   });
   const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
 
   const id = useId();
 
@@ -91,7 +92,7 @@ export function QuoteForm() {
     setTouched((prev) => ({ ...prev, [key]: true }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setTouched({
       fullName: true,
@@ -108,8 +109,31 @@ export function QuoteForm() {
       return;
     }
 
-    setSubmitted(true);
-    toast.success("Thank you! Your inquiry has been recorded. We'll get back to you soon.");
+    setSubmitting(true);
+    try {
+      const res = await fetch("https://formspree.io/f/meeyprba", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify({
+          fullName: data.fullName,
+          email: data.email,
+          company: data.company,
+          contentType: data.contentType,
+          volume: data.volume,
+          budget: data.budget,
+          description: data.description,
+          turnaround: data.turnaround,
+          _subject: `New quote inquiry from ${data.fullName}`,
+        }),
+      });
+      if (!res.ok) throw new Error("Request failed");
+      setSubmitted(true);
+      toast.success("Thank you! Your inquiry has been recorded. We'll get back to you soon.");
+    } catch {
+      toast.error("Something went wrong. Please try again or email us directly.");
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -296,9 +320,10 @@ export function QuoteForm() {
                 >
                   <Button
                     type="submit"
+                    disabled={submitting}
                     className="w-full h-13 rounded-full bg-foreground text-background hover:bg-foreground/90 hover:shadow-[0_0_40px_rgba(255,255,255,0.15)] transition-all duration-300 text-base font-medium"
                   >
-                    Get My Quote
+                    {submitting ? "Sending..." : "Get My Quote"}
                   </Button>
                 </motion.div>
 
